@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>lUcHh • Лучик/Луч</title>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@300;500;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg: rgb(14, 4, 37);
+    --card: rgb(115,81,131);
+    --border: rgb(137, 137, 137);
+    --accent: rgb(248,255,222);
+    --accent2: rgb(220,249,203);
+    --text: rgb(119,183,183);
+    --muted: rgb(165,230,196);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    overflow-x: hidden;
+    line-height: 1.6;
+  }
+
+  /* ---- Фоновые пятна ---- */
+  .glow {
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(140px);
+    opacity: .35;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .glow.g1 { width: 520px; height: 520px; background: var(--accent); top: -180px; left: -140px; }
+  .glow.g2 { width: 460px; height: 460px; background: var(--accent2); bottom: -160px; right: -120px; opacity: .22; }
+
+  .wrap { position: relative; z-index: 1; max-width: 1120px; margin: 0 auto; padding: 0 22px; }
+
+  /* ---- Верхняя строка ---- */
+  .topbar {
+    text-align: center;
+    padding: 26px 0 10px;
+    font-size: 13px;
+    color: var(--muted);
+    letter-spacing: .06em;
+  }
+  .topbar span {
+    display: inline-block;
+    border: 1px solid var(--border);
+    background: var(--card);
+    padding: 8px 18px;
+    border-radius: 999px;
+    backdrop-filter: blur(10px);
+    transition: .35s;
+  }
+  .topbar span:hover { border-color: var(--accent); color: var(--text); }
+
+  /* ---- Hero ---- */
+  .hero {
+    text-align: center;
+    padding: 70px 0 60px;
+    position: relative;
+  }
+  .tagline {
+    font-size: 14px;
+    color: var(--muted);
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    margin-bottom: 26px;
+    animation: fadeUp .8s ease both;
+  }
+  .brand {
+    font-family: 'Unbounded', sans-serif;
+    font-size: clamp(40px, 9vw, 96px);
+    font-weight: 700;
+    line-height: 1;
+    background: linear-gradient(120deg, #fff 10%, var(--accent) 50%, var(--accent2) 90%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: fadeUp .9s .1s ease both;
+  }
+  .brand-sub {
+    font-family: 'Unbounded', sans-serif;
+    font-size: clamp(13px, 2.4vw, 18px);
+    letter-spacing: .5em;
+    color: var(--muted);
+    margin-top: 14px;
+    text-transform: uppercase;
+    animation: fadeUp .9s .2s ease both;
+  }
+  .hero p.intro {
+    max-width: 720px;
+    margin: 42px auto 0;
+    font-size: clamp(16px, 2.2vw, 21px);
+    font-weight: 300;
+    color: #c9c9dd;
+    animation: fadeUp 1s .35s ease both;
+  }
+  .hero p.intro b {
+    font-weight: 600;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  /* ---- Заголовки секций ---- */
+  section { padding: 58px 0; }
+  .sec-title {
+    font-family: 'Unbounded', sans-serif;
+    font-size: clamp(24px, 4vw, 38px);
+    font-weight: 500;
+    margin-bottom: 10px;
+  }
+  .sec-sub { color: var(--muted); font-size: 15px; margin-bottom: 34px; }
+
+  /* ---- Ссылки ---- */
+  .links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+  }
+  .link-btn {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 24px;
+    border: 1px solid var(--border);
+    background: var(--card);
+    border-radius: 14px;
+    color: var(--text);
+    text-decoration: none;
+    font-size: 15px;
+    backdrop-filter: blur(10px);
+    transition: .3s;
+  }
+  .link-btn:hover {
+    border-color: var(--accent);
+    transform: translateY(-3px);
+    box-shadow: 0 12px 30px -12px var(--accent);
+  }
+  .link-btn .dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+  }
+
+  /* ---- Видео ---- */
+  .video-card {
+    border: 1px solid var(--border);
+    background: var(--card);
+    border-radius: 22px;
+    padding: 34px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    flex-wrap: wrap;
+    backdrop-filter: blur(10px);
+    transition: .35s;
+  }
+  .video-card:hover { border-color: rgba(124,92,255,.5); }
+  .video-card h3 { font-family: 'Unbounded', sans-serif; font-weight: 500; font-size: 22px; }
+  .video-card p { color: var(--muted); font-size: 14px; margin-top: 6px; }
+  .play-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: linear-gradient(120deg, var(--accent), var(--accent2));
+    color: #08080f;
+    font-weight: 600;
+    padding: 14px 28px;
+    border-radius: 999px;
+    text-decoration: none;
+    font-size: 15px;
+    transition: .3s;
+    white-space: nowrap;
+  }
+  .play-btn:hover { transform: scale(1.05); box-shadow: 0 0 34px -6px var(--accent2); }
+
+  /* ---- Сетка игр ---- */
+  .games {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 22px;
+  }
+  .game {
+    border: 1px solid var(--border);
+    background: var(--card);
+    border-radius: 20px;
+    padding: 28px;
+    display: flex;
+    flex-direction: column;
+    backdrop-filter: blur(10px);
+    transition: .35s;
+    position: relative;
+    overflow: hidden;
+  }
+  .game::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(140deg, rgba(124,92,255,.14), transparent 55%);
+    opacity: 0;
+    transition: .35s;
+  }
+  .game:hover { transform: translateY(-6px); border-color: rgba(124,92,255,.55); }
+  .game:hover::before { opacity: 1; }
+  .game > * { position: relative; z-index: 1; }
+  .game h3 {
+    font-family: 'Unbounded', sans-serif;
+    font-size: 19px;
+    font-weight: 500;
+    margin-bottom: 12px;
+  }
+  .game p { color: #a9a9c2; font-size: 14.5px; flex: 1; }
+  .steam {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 22px;
+    color: var(--accent2);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 600;
+    transition: .25s;
+  }
+  .steam:hover { gap: 14px; }
+
+  /* ---- Футер ---- */
+  footer {
+    text-align: center;
+    padding: 70px 0 50px;
+    color: var(--muted);
+    font-size: 13px;
+    border-top: 1px solid var(--border);
+    margin-top: 50px;
+  }
+  footer .f-brand {
+    font-family: 'Unbounded', sans-serif;
+    font-size: 18px;
+    color: var(--text);
+    margin-bottom: 10px;
+    letter-spacing: .2em;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (max-width: 560px) {
+    .video-card { padding: 26px; }
+    section { padding: 42px 0; }
+  }
+</style>
+</head>
+<body>
+
+<div class="glow g1"></div>
+<div class="glow g2"></div>
+
+<div class="wrap">
+
+  <!-- HERO -->
+  <header class="hero">
+    <div class="tagline">Ꭰᴏn'ᴛ yᴏu dᴀrᴇ ʙurn yᴏursᴇlf ᴛᴏ ᴛhᴇ grᴏund.</div>
+    <h1 class="brand">lᏌᴄᎻh</h1>
+    <div class="brand-sub">Лучик / Луч</div>
+    <p class="intro">
+      Я <b>lᏌᴄᎻh</b> или же <b>Лучик</b> - творческий человек, который занимается всем по немногу.
+    </p>
+    <section id="about">
+    <h2 class="sec-title">Немного обо мне</h2>
+    <p class="sec-sub">...Часто играю в видеоигры. также много слушаю музыки и пытаюсь развиться в разных сферах. Учусь на программиста. На момент создания данной страницы активно стараюсь развиться
+        в Blender, Emote Lab, немного рисую и также стараюсь работать с Figma, но на данный момент редко его трогаю.
+    </p>
+      <div
+        class="about-text"
+        id="aboutText"
+        contenteditable="true"
+        spellcheck="false"
+      ></div>
+    </div>
+  </section>
+  </header>
+
+  <!-- ССЫЛКИ -->
+  <section id="links">
+    <h2 class="sec-title">Ссылки</h2>
+    <p class="sec-sub">Где можно меня найти, а также иные ссылки</p>
+    <div class="links">
+      <a class="link-btn" href="https://steamcommunity.com/id/lUcHh/"><span class="dot"></span>Steam</a>
+      <a class="link-btn" href="https://discordapp.com/users/1241351344384770170"><span class="dot"></span>Discord</a>
+      <a class="link-btn" href="https://vk.ru/luchikkuss"><span class="dot"></span>VK</a>
+      <a class="link-btn" href="https://main.bsky.dev/profile/luchikuss.bsky.social"><span class="dot"></span>Bluesky</a>
+      <a class="link-btn" href="https://yourgamerprofile.com/lUcHh"><span class="dot"></span>YGP</a>
+
+    </div>
+  </section>
+
+  <!-- ИГРЫ -->
+  <section id="games">
+    <h2 class="sec-title">Любимые игры</h2>
+    <p class="sec-sub">То, во что я часто играю</p>
+
+    <div class="games">
+
+      <div class="game">
+        <h3>Bongo Cat</h3>
+        <p>просто глупенький котик, который радует мои глаза на экране своим тапаньем, пока учусь.</p>
+        <a class="steam" href="https://store.steampowered.com/app/3419430/Bongo_Cat/">Открыть в Steam →</a>
+      </div>
+
+ <div class="game">
+        <h3>Haste</h3>
+        <p>Одна из любимых быстрых игр по типу Соника, где нужно быстро уворачиваться от препятствий и как можно скорее думать.</p>
+        <a class="steam" href="https://store.steampowered.com/app/1796470/Haste/">Открыть в Steam →</a>
+      </div>
+ <div class="game">
+        <h3>Cult of the lamb</h3>
+        <p>Моя любимая игра-рогалик, в которую приятно засесть вечером и отдохнуть, играя на геймпаде.</p>
+        <a class="steam" href="https://store.steampowered.com/app/1313140">Открыть в Steam →</a>
+      </div>
+ <div class="game">
+        <h3>PEAK</h3>
+        <p>Любимая кооперативная игра для меня и моих друзей. часто зависаю в нем по вечерам в компании<div class=""></div></p>
+        <a class="steam" href="https://store.steampowered.com/app/3527290/PEAK/">Открыть в Steam →</a>
+      </div>
+
+    </div>
+  </section>
+
+  <section id="about">
+    <h2 class="sec-title">🤔</h2>
+    <p class="sec-sub">Текст скоро появится! Наверное....</p>
+  </section>
+</div>
+
+</body>
+</html>
